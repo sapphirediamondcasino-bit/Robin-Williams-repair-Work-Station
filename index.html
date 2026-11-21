@@ -1,754 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Robin Williams Repair Bot - O Captain! My Captain!</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap');
-        
-        body {
-            font-family: 'Lora', serif;
-        }
-        
-        .font-serif-header {
-            font-family: 'Cinzel', serif;
-        }
-        
-        .vintage-texture {
-            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Robin Williams Repair Bot | Script repair for FiveM and Roblox</title>
+<meta name="description" content="A Discord bot that repairs FiveM and Roblox scripts and teaches you why they broke.">
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<style>
+:root{--wool:#122419;--wool2:#183024;--oak:#20160e;--brass:#c29a4b;--seal:#9a3430;--chalk:#ece6d3;--dim:#a8ae9f;--line:#2f4a3b;--ok:#8cc095;--bad:#e08a7e}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--wool);color:var(--chalk);font:17px/1.7 Lora,Georgia,serif}
+h1,h2,h3{font-family:"IM Fell English",Georgia,serif;font-weight:400;margin:0;line-height:1.1}
+a{color:var(--brass)}
+:focus-visible{outline:2px solid var(--brass);outline-offset:3px}
+.wrap{max-width:1100px;margin:0 auto;padding:0 22px}
+header.top{border-bottom:1px solid var(--line);padding:14px 0}
+header.top .wrap{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.mark{font:italic 22px "IM Fell English",serif}
+.mark small{display:block;font:13px Lora,serif;color:var(--dim);font-style:italic}
+.nav{display:flex;gap:22px;align-items:center;font-size:15px}
+.nav a{color:var(--chalk);text-decoration:none}
+.btn{display:inline-block;border:1px solid var(--brass);background:var(--brass);color:#1c1406;padding:9px 18px;border-radius:3px;font:600 15px Lora,serif;cursor:pointer;text-decoration:none}
+.btn.seal{background:var(--seal);border-color:var(--seal);color:#fbeee8}
+.btn.ghost{background:none;color:var(--chalk);border-color:var(--line)}
+.btn:disabled{opacity:.5;cursor:default}
+.hero{display:grid;grid-template-columns:1fr 1.1fr;gap:44px;padding:60px 0 56px;align-items:start}
+.hero h1{font-size:clamp(40px,6vw,68px);font-style:italic;margin-bottom:20px}
+.hero p{color:var(--dim);margin:0 0 22px;max-width:36ch}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:26px}
+.cmds{font-size:14px;color:var(--dim);border-top:1px solid var(--line);padding-top:14px}
+.cmds code{color:var(--chalk)}
+.desk{background:var(--oak);border:1px solid #5a4326;border-radius:3px;display:flex;flex-direction:column;height:600px;box-shadow:0 0 0 4px var(--wool),0 0 0 5px #5a4326}
+.desk header{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #3d2c1b;padding:0 14px}
+.tabs{display:flex;gap:4px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--dim);font:600 14px Lora,serif;padding:12px 10px;cursor:pointer}
+.tabs button[aria-selected=true]{color:var(--chalk);border-color:var(--brass)}
+.usage{font-size:13px;color:var(--dim)}
+.pane{flex:1;min-height:0;display:flex;flex-direction:column}
+.pane[hidden],.gate[hidden]{display:none}
+.pane.pad{padding:14px;overflow-y:auto;gap:10px}
+#log{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:12px}
+.m{max-width:88%;padding:10px 14px;border-radius:3px;white-space:pre-wrap;word-wrap:break-word;font-size:16px}
+.m.me{align-self:flex-end;background:#3a2a1a}
+.m.bot{align-self:flex-start;background:#17110b;border:1px solid #3d2c1b}
+.m.err{color:var(--bad)}
+.m pre,.item pre{background:#0d0905;padding:10px;border-radius:3px;overflow:auto;font:12.5px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;margin:8px 0 0}
+#form{display:flex;gap:8px;padding:12px;border-top:1px solid #3d2c1b}
+#form textarea{flex:1;resize:none;height:46px}
+.desk textarea,.desk select,.desk input[type=text]{width:100%;background:#17110b;color:var(--chalk);border:1px solid #3d2c1b;border-radius:3px;padding:9px;font:inherit;font-size:15px}
+.desk textarea.big{height:150px;font:13px ui-monospace,Menlo,monospace;resize:vertical}
+.desk label{font-size:13px;color:var(--dim)}
+.row{display:flex;gap:10px}.row>*{flex:1}
+.gate{padding:34px 24px;text-align:center;color:var(--dim);margin:auto}
+.lock{color:var(--dim);font-size:14px}
+.bar{height:8px;background:#17110b;border:1px solid #3d2c1b;border-radius:4px;overflow:hidden;margin:6px 0 14px}
+.bar i{display:block;height:100%;background:var(--brass)}
+.item{border:1px solid #3d2c1b;border-radius:3px;padding:10px;font-size:14px;cursor:pointer}
+section{padding:60px 0;border-top:1px solid var(--line)}
+section h2{font-size:36px;margin-bottom:8px;font-style:italic}
+.sub{color:var(--dim);margin:0 0 30px;max-width:52ch}
+.syl div{display:grid;grid-template-columns:200px 1fr;gap:20px;padding:16px 0;border-top:1px solid var(--line)}
+.syl div:last-child{border-bottom:1px solid var(--line)}
+.syl b{font:italic 22px "IM Fell English",serif;font-weight:400;color:var(--brass)}
+.syl span{color:var(--dim)}
+.fac{display:grid;gap:30px;grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.fac h3{font-size:26px}
+.fac em{display:block;color:var(--brass);font-size:14px;margin:2px 0 8px}
+.fac p{margin:0;color:var(--dim);font-size:15px}
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px;font-size:15px}
+th,td{text-align:left;padding:14px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+thead th{font:italic 16px "IM Fell English",serif;color:var(--dim);font-weight:400}
+tbody th{font:22px "IM Fell English",serif;font-weight:400}
+td small{color:var(--dim)}
+tr.cur{background:var(--wool2)}
+.tag{color:var(--ok);font-size:14px}
+.cave{text-align:center}
+.cave blockquote{font:italic 26px/1.4 "IM Fell English",serif;max-width:24em;margin:0 auto 10px}
+.cave cite{display:block;color:var(--dim);font-size:14px;margin-bottom:28px}
+footer{border-top:1px solid var(--line);padding:30px 0 40px;color:var(--dim);font-size:14px;text-align:center}
+footer p{margin:6px auto;max-width:60ch}
+@media(max-width:860px){.hero{grid-template-columns:1fr}.syl div{grid-template-columns:1fr;gap:4px}.nav a.h{display:none}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
 </head>
-<body class="bg-gradient-to-br from-amber-950 via-slate-900 to-slate-950 text-white">
-    <!-- Navigation -->
-    <nav class="fixed w-full bg-slate-900/95 backdrop-blur-lg z-50 border-b border-amber-900/30">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-br from-amber-700 via-orange-800 to-red-900 rounded-lg flex items-center justify-center shadow-lg">
-                    <span class="text-3xl">📚</span>
-                </div>
-                <div>
-                    <h1 class="text-xl font-bold text-amber-100 font-serif-header">Robin Williams Repair Bot</h1>
-                    <p class="text-xs text-amber-300/70 italic">"O Captain! My Captain!"</p>
-                </div>
-            </div>
-            
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#about" class="text-amber-200 hover:text-amber-100 transition">About</a>
-                <a href="#family" class="text-amber-200 hover:text-amber-100 transition">Family</a>
-                <a href="#pricing" class="text-amber-200 hover:text-amber-100 transition">Pricing</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="px-6 py-2 bg-gradient-to-r from-amber-700 to-orange-800 rounded-lg hover:shadow-lg transition font-semibold text-amber-50">
-                    Seize the Day
-                </a>
-            </div>
-            
-            <button id="mobile-menu-btn" class="md:hidden text-amber-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-        </div>
-        
-        <div id="mobile-menu" class="hidden md:hidden bg-slate-900 border-t border-amber-900/30 p-6">
-            <div class="flex flex-col gap-4">
-                <a href="#about" class="text-amber-200">About</a>
-                <a href="#family" class="text-amber-200">Family</a>
-                <a href="#pricing" class="text-amber-200">Pricing</a>
-                <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="px-6 py-2 bg-gradient-to-r from-amber-700 to-orange-800 rounded-lg text-center text-amber-50 font-semibold">
-                    Seize the Day
-                </a>
-            </div>
-        </div>
-    </nav>
+<body>
+<header class="top"><div class="wrap">
+  <div class="mark">Robin Williams Repair Bot<small>Script repair, taught properly</small></div>
+  <nav class="nav" aria-label="Main">
+    <a class="h" href="#syllabus">Syllabus</a><a class="h" href="#faculty">Faculty</a><a class="h" href="#tuition">Tuition</a>
+    <span id="navAuth"></span>
+  </nav>
+</div></header>
 
-    <!-- Hero -->
-    <section class="pt-32 pb-20 px-6 relative overflow-hidden vintage-texture">
-        <div class="absolute inset-0 bg-gradient-to-b from-amber-950/20 via-transparent to-slate-900/40"></div>
-        
-        <div class="max-w-7xl mx-auto text-center relative z-10">
-            <div class="mb-12">
-                <div class="text-8xl mb-6 animate-pulse">🪶</div>
-                <div class="inline-block mb-6 px-8 py-4 bg-slate-900/80 backdrop-blur-sm border-2 border-amber-800/50 rounded-lg shadow-2xl">
-                    <p class="text-amber-200 text-sm italic mb-2">
-                        "We don't read and write poetry because it's cute."
-                    </p>
-                    <p class="text-amber-100 text-lg">
-                        We code because we are members of the human race.<br>
-                        And the human race is filled with <span class="text-amber-400 font-bold">passion</span>.
-                    </p>
-                </div>
-            </div>
-            
-            <h1 class="text-7xl md:text-9xl font-bold mb-8 leading-tight font-serif-header">
-                <span class="bg-gradient-to-r from-amber-300 via-orange-400 to-red-500 bg-clip-text text-transparent">
-                    Carpe Diem
-                </span>
-            </h1>
-            
-            <p class="text-3xl md:text-5xl text-amber-100 mb-6 font-light italic">
-                Seize the day. Make your code extraordinary.
-            </p>
+<main>
+<div class="wrap hero">
+  <div>
+    <h1>Rip out the page that says it can’t be fixed.</h1>
+    <p>Bring Robin a broken FiveM or Roblox script. He finds why it broke, fixes it, and shows you how to spot it next time.</p>
+    <div class="cta">
+      <a class="btn seal" href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot%20applications.commands" target="_blank" rel="noopener">Add Robin to Discord</a>
+      <a class="btn ghost" href="https://discord.gg/n3tMMVS3YR" target="_blank" rel="noopener">Join the Dead Poets Society</a>
+    </div>
+    <div class="cmds">In Discord: <code>/ask</code> a question, <code>/repair</code> a script, <code>/status</code> for today’s usage, <code>/subscribe</code> for plans.</div>
+  </div>
 
-            <p class="text-xl text-amber-200/80 mb-16 max-w-4xl mx-auto leading-relaxed">
-                Stand on your desk. Look at your broken scripts from a different angle.<br>
-                <span class="text-amber-300 font-semibold">Robin doesn't just fix code. He teaches you to think.</span>
-            </p>
+  <div class="desk" aria-label="Robin’s desk">
+    <header>
+      <div class="tabs" role="tablist">
+        <button data-t="chat">Chat</button><button data-t="repair">Repair</button><button data-t="history">History</button><button data-t="account">Account</button>
+      </div>
+      <span class="usage" id="usage"></span>
+    </header>
+    <div class="gate" id="gate" hidden>
+      <p>Sign in with Discord to talk to Robin, repair scripts and keep your history.</p>
+      <button class="btn" id="gateBtn">Sign in with Discord</button>
+    </div>
+    <div class="pane" id="pane-chat" hidden>
+      <div id="log" aria-live="polite"></div>
+      <form id="form">
+        <textarea id="msg" placeholder="Ask Robin about your script…" aria-label="Message"></textarea>
+        <button class="btn" id="send">Send</button>
+      </form>
+    </div>
+    <div class="pane pad" id="pane-repair" hidden>
+      <div class="row">
+        <div><label for="fw">Platform</label><select id="fw"><option>FiveM (Lua)</option><option>Roblox (Luau)</option></select></div>
+        <div><label for="file">Script file</label><input type="file" id="file" accept=".lua,.luau,.js,.json,.cfg,.txt,.xml"></div>
+      </div>
+      <label for="code">Script</label><textarea class="big" id="code" placeholder="Paste or upload your script"></textarea>
+      <label for="err">Error message (optional)</label><input type="text" id="err" placeholder="attempt to index a nil value (field 'Player')">
+      <button class="btn" id="fix">Repair script</button>
+      <div id="result"></div>
+    </div>
+    <div class="pane pad" id="pane-history" hidden><div id="hist" class="lock"></div></div>
+    <div class="pane pad" id="pane-account" hidden><div id="acct"></div></div>
+  </div>
+</div>
 
-            <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
-                <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="px-12 py-6 bg-gradient-to-r from-amber-700 via-orange-800 to-red-900 rounded-xl text-2xl font-bold hover:shadow-2xl transition-all transform hover:scale-105 flex items-center justify-center gap-3 text-amber-50 border-2 border-amber-600/50">
-                    <span>📚</span>
-                    O Captain! My Captain!
-                </a>
-                <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="px-12 py-6 bg-slate-800/80 backdrop-blur-sm rounded-xl text-2xl font-bold hover:bg-slate-700 transition-all flex items-center justify-center gap-3 border-2 border-amber-800/30 text-amber-100">
-                    Join the Dead Poets Society
-                    <span>→</span>
-                </a>
-            </div>
+<section id="syllabus"><div class="wrap">
+  <h2>The syllabus</h2>
+  <p class="sub">Every repair follows the same four lessons.</p>
+  <div class="syl">
+    <div><b>Diagnose</b><span>Robin reads the error and the script together and names the root cause, not just the line that crashed.</span></div>
+    <div><b>Repair</b><span>You get the complete fixed script back, ready to drop into your resource or place.</span></div>
+    <div><b>Explain</b><span>A short note on why it broke, so the same mistake doesn’t catch you twice.</span></div>
+    <div><b>Protect</b><span>Robin won’t break licensing, escrow or encryption, and won’t write cheats or exploits.</span></div>
+  </div>
+</div></section>
 
-            <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-                <div class="p-8 bg-slate-900/70 backdrop-blur-sm border-l-4 border-amber-700 rounded-lg shadow-xl">
-                    <p class="text-amber-100 text-lg italic mb-3">
-                        "No matter what anybody tells you, words and ideas can change the world."
-                    </p>
-                    <p class="text-amber-400 text-sm font-semibold">- John Keating</p>
-                </div>
-                <div class="p-8 bg-slate-900/70 backdrop-blur-sm border-l-4 border-amber-700 rounded-lg shadow-xl">
-                    <p class="text-amber-100 text-lg italic mb-3">
-                        "Medicine, law, business, engineering – these are noble pursuits. But poetry, beauty, romance, love – these are what we stay alive for."
-                    </p>
-                    <p class="text-amber-400 text-sm font-semibold">- John Keating</p>
-                </div>
-            </div>
-        </div>
-    </section>
+<section id="faculty"><div class="wrap">
+  <h2>The faculty</h2>
+  <p class="sub">Three AIs from Kurrasch Systems, each with a different classroom.</p>
+  <div class="fac">
+    <div><h3>Robin AI</h3><em>Script repair · in session</em><p>Runs the Robin Williams Repair Bot. Patient at 3 AM, curious about your bug, and fond of a good explanation.</p></div>
+    <div><h3>Melanie AI</h3><em>The Diane Keaton Bot · updating</em><p>The honest one. Twin sister to Penny, and not shy about telling you what she thinks.</p></div>
+    <div><h3>Penny AI</h3><em>Kurrasch Systems Studio · almost ready</em><p>The builder. Melanie’s twin, created the same day.</p></div>
+  </div>
+</div></section>
 
-    <!-- Method Section -->
-    <section id="about" class="py-24 px-6 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 border-y border-amber-900/30">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-20">
-                <div class="text-8xl mb-6">🎓</div>
-                <h2 class="text-6xl font-bold mb-6 text-amber-100 font-serif-header">The Robin Williams Method</h2>
-                <p class="text-2xl text-amber-300 italic">"I stand upon my desk to remind myself that we must constantly look at things in a different way."</p>
-            </div>
+<section id="tuition"><div class="wrap">
+  <h2>Tuition</h2>
+  <p class="sub">Start free. After you add Robin to your server, upgrade any time with <code>/subscribe</code>.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Plan</th><th>Price</th><th>Repairs a day</th><th>Conversions a day</th><th>Includes</th><th></th></tr></thead>
+    <tbody id="ledger"></tbody>
+  </table></div>
+</div></section>
 
-            <div class="grid md:grid-cols-3 gap-12 mb-20">
-                <div class="text-center p-10 bg-gradient-to-b from-amber-950/50 to-slate-900/80 backdrop-blur-lg border-2 border-amber-800/30 rounded-xl transform hover:scale-105 transition-all shadow-xl">
-                    <div class="text-7xl mb-6">📖</div>
-                    <h3 class="text-3xl font-bold mb-4 text-amber-200 font-serif-header">He Teaches</h3>
-                    <p class="text-amber-100/80 text-lg leading-relaxed">
-                        Like Mr. Keating standing on that desk, Robin shows you a new perspective. He doesn't just patch your code – he teaches you <span class="italic text-amber-300">why</span> it broke and how to think differently.
-                    </p>
-                </div>
+<section class="cave"><div class="wrap">
+  <h2>The cave is open</h2>
+  <p class="sub" style="margin-inline:auto">Our Discord is where scripters swap fixes, show off builds and read each other’s work.</p>
+  <blockquote>O Captain! my Captain! our fearful trip is done.</blockquote>
+  <cite>Walt Whitman, 1865</cite>
+  <a class="btn seal" href="https://discord.gg/n3tMMVS3YR" target="_blank" rel="noopener">Join the Dead Poets Society</a>
+</div></section>
+</main>
 
-                <div class="text-center p-10 bg-gradient-to-b from-amber-950/50 to-slate-900/80 backdrop-blur-lg border-2 border-amber-800/30 rounded-xl transform hover:scale-105 transition-all shadow-xl">
-                    <div class="text-7xl mb-6">❤️</div>
-                    <h3 class="text-3xl font-bold mb-4 text-amber-200 font-serif-header">He Cares</h3>
-                    <p class="text-amber-100/80 text-lg leading-relaxed">
-                        Like Mrs. Doubtfire making everything okay, Robin genuinely cares about you. When you're frustrated at 3 AM, he's patient. When you're stuck, he's encouraging. Never judgmental.
-                    </p>
-                </div>
+<footer><div class="wrap">
+  <p>In memory of Robin Williams, 1951–2014. Carpe diem.</p>
+  <p>An unofficial tribute. Not affiliated with or endorsed by the Williams family or estate, or the makers of Dead Poets Society.</p>
+  <p>© 2025 Kurrasch Systems Studio · <a href="https://discord.gg/n3tMMVS3YR" target="_blank" rel="noopener">Support</a></p>
+</div></footer>
 
-                <div class="text-center p-10 bg-gradient-to-b from-amber-950/50 to-slate-900/80 backdrop-blur-lg border-2 border-amber-800/30 rounded-xl transform hover:scale-105 transition-all shadow-xl">
-                    <div class="text-7xl mb-6">✨</div>
-                    <h3 class="text-3xl font-bold mb-4 text-amber-200 font-serif-header">He Inspires</h3>
-                    <p class="text-amber-100/80 text-lg leading-relaxed">
-                        "You're only given a little spark of madness. You mustn't lose it." Robin brings joy, humor, and warmth to debugging. Makes you remember why you love coding.
-                    </p>
-                </div>
-            </div>
+<script>
+const sb = supabase.createClient('https://tgqlddaztyoyfwpxixli.supabase.co','sb_publishable_vC4eXFbSVBe-zTwmqms79Q_rADsZ6OO');
+const INVITE='https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot%20applications.commands';
+const PLANS=[
+ {id:'free',name:'Free',price:'$0',per:' forever',r:15,c:10,x:'Google Drive, community support'},
+ {id:'tier1',name:'Tier 1',price:'$4.99',per:'/mo',r:25,c:20,x:'GitHub and Trello, priority queue'},
+ {id:'tier2',name:'Tier 2',price:'$10.99',per:'/mo',r:45,c:25,x:'Everything in Tier 1, extended support'},
+ {id:'tier3',name:'Tier 3',price:'$15.99',per:'/mo',r:85,c:65,x:'Everything in Tier 2, premium support'},
+ {id:'tier4',name:'Tier 4',price:'$25.99',per:'/mo',r:250,c:215,x:'Everything in Tier 3, priority response'},
+ {id:'tier5',name:'Tier 5 Partner',price:'Custom',per:'',r:'Unlimited',c:'Unlimited',x:'Partner badge, all integrations'}];
+const $=id=>document.getElementById(id);
+const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let session=null, me=null, tab='chat', fileName='', history=[], greeted=false;
 
-            <div class="p-12 bg-gradient-to-br from-slate-900 via-amber-950/30 to-slate-900 border-2 border-amber-700/50 rounded-2xl shadow-2xl">
-                <div class="text-center mb-8">
-                    <div class="text-7xl mb-6">📜</div>
-                    <p class="text-4xl italic text-amber-100 mb-6 leading-relaxed">
-                        "Carpe diem. Seize the day, boys.<br>Make your lives extraordinary."
-                    </p>
-                    <div class="h-1 w-32 bg-amber-700 mx-auto mb-6"></div>
-                    <p class="text-xl text-amber-300">
-                        When your FiveM or Roblox scripts break, when you're ready to quit,<br>
-                        Robin stands on that metaphorical desk and reminds you:<br>
-                        <span class="text-amber-200 font-bold text-2xl">Your code can be extraordinary.</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+async function robin(action,payload={}){
+  const {data,error}=await sb.functions.invoke('robin',{body:{action,...payload}});
+  if(error) throw error;
+  return data;
+}
+const tier=()=>me?.profile?.tier||'free';
+const limitR=()=>{const p=PLANS.find(p=>p.id===tier());return typeof p.r==='number'?p.r:Infinity;};
 
-    <!-- What Robin Does -->
-    <section class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <div class="text-7xl mb-6">🔧</div>
-                <h2 class="text-5xl font-bold mb-6 text-amber-100 font-serif-header">What Robin Actually Fixes</h2>
-                <p class="text-2xl text-amber-300">FiveM & Roblox Script Repair • Powered by Robin AI</p>
-            </div>
+function renderLedger(){
+  $('ledger').innerHTML=PLANS.map(p=>`<tr class="${session&&tier()===p.id?'cur':''}">
+    <th scope="row">${p.name}</th><td>${p.price}<small>${p.per}</small></td><td>${p.r}</td><td>${p.c}</td><td>${p.x}</td>
+    <td>${session&&tier()===p.id?'<span class="tag">Your plan</span>':p.id==='tier5'?'<a href="https://discord.gg/n3tMMVS3YR" target="_blank" rel="noopener">Apply</a>':p.id==='free'?`<a href="${INVITE}" target="_blank" rel="noopener">Add Robin</a>`:'<span class="lock">/subscribe</span>'}</td></tr>`).join('');
+}
 
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">💻</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">Script Diagnostics</h3>
-                    <p class="text-amber-200/80 mb-4">FiveM and Roblox errors traced and fixed</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ Error diagnosis & root cause</li>
-                        <li>✓ Missing files detected</li>
-                        <li>✓ Mesh & model issues</li>
-                    </ul>
-                </div>
+function addMsg(text,who,err){
+  const d=document.createElement('div'); d.className='m '+who+(err?' err':'');
+  String(text).split(/```(?:\w+)?\n?/).forEach((part,i)=>{
+    if(i%2){const pre=document.createElement('pre');pre.textContent=part.trim();d.appendChild(pre);}
+    else if(part){d.appendChild(document.createTextNode(part));}
+  });
+  $('log').appendChild(d); $('log').scrollTop=$('log').scrollHeight;
+}
 
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">🛡️</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">Safe Repairs</h3>
-                    <p class="text-amber-200/80 mb-4">Protected with ethical policies</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ No IP tampering ever</li>
-                        <li>✓ Privacy respected</li>
-                        <li>✓ Transparent fixes</li>
-                    </ul>
-                </div>
+function showTab(t){
+  tab=t; $('gate').hidden=!!session;
+  document.querySelectorAll('.pane').forEach(p=>p.hidden=!session||p.id!=='pane-'+t);
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.t===t));
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.t));
 
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">💬</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">Real Conversations</h3>
-                    <p class="text-amber-200/80 mb-4">Natural dialogue, not commands</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ Natural language</li>
-                        <li>✓ Context aware</li>
-                        <li>✓ Mood detection</li>
-                    </ul>
-                </div>
+function signIn(){ sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:location.origin+location.pathname}}); }
+$('gateBtn').onclick=signIn;
 
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">💡</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">Learning AI</h3>
-                    <p class="text-amber-200/80 mb-4">Adapts to your style</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ Pattern recognition</li>
-                        <li>✓ Preference memory</li>
-                        <li>✓ Improves over time</li>
-                    </ul>
-                </div>
+function setUsage(){
+  const p=me?.profile; const l=limitR();
+  $('usage').textContent=p?`${p.repairs_today}${l===Infinity?'':' / '+l} repairs today`:'';
+}
 
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">🔗</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">Integrations</h3>
-                    <p class="text-amber-200/80 mb-4">Works with your tools</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ Google Drive (Free)</li>
-                        <li>✓ GitHub (Paid)</li>
-                        <li>✓ Trello (Paid)</li>
-                    </ul>
-                </div>
+function renderAccount(){
+  const p=me?.profile, el=$('acct'); if(!p){el.innerHTML='';return;}
+  const l=limitR(), plan=PLANS.find(x=>x.id===p.tier)||PLANS[0];
+  el.innerHTML=`<h3 style="font-size:24px">${plan.name} plan</h3>
+   <p class="usage" style="margin:8px 0 0">Repairs today: ${p.repairs_today} / ${l===Infinity?'unlimited':l}</p>
+   <div class="bar"><i style="width:${l===Infinity?4:Math.min(100,p.repairs_today/l*100)}%"></i></div>
+   <p class="lock">Upgrade with <code>/subscribe</code> in Discord. Usage resets every day at midnight UTC, and it is shared between this site and the bot.</p>`;
+}
 
-                <div class="p-8 bg-slate-900/70 border border-amber-800/30 rounded-xl hover:border-amber-700/50 transition-all">
-                    <div class="text-5xl mb-4">☕</div>
-                    <h3 class="text-2xl font-bold mb-3 text-amber-100 font-serif-header">3 AM Friend</h3>
-                    <p class="text-amber-200/80 mb-4">Always there for you</p>
-                    <ul class="space-y-2 text-sm text-amber-200/70">
-                        <li>✓ 24/7 availability</li>
-                        <li>✓ Patient support</li>
-                        <li>✓ Never judges</li>
-                    </ul>
-                </div>
-            </div>
+async function loadHistory(){
+  const box=$('hist');
+  try{
+    const {items}=await robin('history');
+    box.className='';
+    box.innerHTML=items.length?items.map(r=>`<div class="item" tabindex="0" role="button"><b>${esc(r.filename||'script')}</b> <span class="lock">${esc(r.framework)} · ${new Date(r.created_at).toLocaleString()}</span><div hidden><p>${esc(r.explanation)}</p><pre>${esc(r.fixed_code)}</pre></div></div>`).join(''):'<p class="lock">No repairs yet. Your last 20, from here and from Discord, will show up here.</p>';
+    box.querySelectorAll('.item').forEach(i=>{const t=()=>{const d=i.querySelector('div');d.hidden=!d.hidden;};i.onclick=t;i.onkeydown=e=>{if(e.key==='Enter')t();};});
+  }catch(e){box.className='lock';box.textContent='History could not load. Check that the robin function is deployed.';}
+}
 
-            <div class="p-10 bg-gradient-to-r from-slate-900/80 to-amber-950/40 rounded-3xl border-2 border-amber-700/40 text-center">
-                <div class="text-6xl mb-6">🤖</div>
-                <h3 class="text-3xl font-bold mb-4 text-amber-100 font-serif-header">Powered by Robin AI</h3>
-                <p class="text-xl text-amber-200 max-w-3xl mx-auto leading-relaxed">
-                    Robin AI is a Mini AI created by Kurrasch Systems. The intelligent core that makes this bot feel different - 
-                    combining advanced diagnostics with genuine warmth and personality.
-                </p>
-            </div>
-        </div>
-    </section>
+async function refresh(){
+  session=(await sb.auth.getSession()).data.session; me=null;
+  if(session){try{me=await robin('me');}catch(e){console.error(e);}}
+  $('navAuth').innerHTML=session?`<span class="usage">${esc(me?.name||'Signed in')}</span> <button class="btn ghost" id="out">Sign out</button>`:'<button class="btn" id="inBtn">Sign in</button>';
+  if(session)$('out').onclick=()=>sb.auth.signOut(); else $('inBtn').onclick=signIn;
+  showTab(tab); setUsage(); renderLedger(); renderAccount();
+  if(session){ loadHistory(); if(!greeted){greeted=true;addMsg('Pull up a chair. What’s breaking? Paste the error and the script it came from.','bot');} }
+}
+sb.auth.onAuthStateChange((ev)=>{ if(ev!=='TOKEN_REFRESHED') refresh(); });
 
-    <!-- Family -->
-    <section id="family" class="py-24 px-6 bg-gradient-to-b from-amber-950/20 via-slate-900 to-slate-900 border-y border-amber-900/30">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-16">
-                <div class="text-7xl mb-6">👥</div>
-                <h2 class="text-5xl font-bold mb-6 text-amber-100 font-serif-header">The Kurrasch Systems Family</h2>
-                <p class="text-2xl text-amber-300">Three AIs. Three personalities. One mission.</p>
-            </div>
+$('msg').addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();$('form').requestSubmit();}});
+$('form').addEventListener('submit',async e=>{
+  e.preventDefault(); const text=$('msg').value.trim(); if(!text) return;
+  $('msg').value=''; addMsg(text,'me'); $('send').disabled=true;
+  try{
+    const d=await robin('chat',{message:text,history:history.slice(-10)});
+    if(d.error) throw new Error(d.error);
+    addMsg(d.reply,'bot',!!d.limit);
+    if(!d.limit){history.push({role:'user',content:text},{role:'assistant',content:d.reply});}
+  }catch(err){addMsg('Robin couldn’t answer just now. Try again in a moment.','bot',true);console.error(err);}
+  $('send').disabled=false; $('msg').focus();
+});
 
-            <div class="grid md:grid-cols-3 gap-10">
-                <div class="p-10 bg-gradient-to-b from-amber-950/70 to-slate-900/90 border-2 border-amber-700 rounded-2xl shadow-2xl transform hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="w-28 h-28 bg-gradient-to-br from-amber-600 to-orange-800 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                            <span class="text-6xl">📚</span>
-                        </div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Robin AI 🎭</h3>
-                        <p class="text-lg text-amber-300 mb-2 italic">"O Captain!"</p>
-                        <span class="inline-block px-4 py-2 bg-green-900/40 text-green-300 text-sm rounded-full font-bold border border-green-700/50">ACTIVE</span>
-                    </div>
-                    <p class="text-amber-200/90 text-center mb-6 leading-relaxed">
-                        Powers the <strong>Robin Williams Repair Bot</strong>. The teacher who changes lives.
-                    </p>
-                    <div class="space-y-2 text-sm text-amber-200/80">
-                        <p>⭐ FiveM & Roblox repair</p>
-                        <p>⭐ Teaching method</p>
-                        <p>⭐ Emotional intelligence</p>
-                    </div>
-                </div>
+$('file').onchange=async e=>{
+  const f=e.target.files[0]; if(!f) return;
+  if(f.size>100000){$('result').innerHTML='<p class="m err">That file is over 100 KB. Paste the relevant part instead.</p>';return;}
+  fileName=f.name; $('code').value=await f.text();
+  if(/\.luau$/i.test(fileName))$('fw').selectedIndex=1;
+};
+$('fix').onclick=async()=>{
+  const code=$('code').value.trim(), out=$('result');
+  if(!code){out.innerHTML='<p class="m err">Add a script first.</p>';return;}
+  $('fix').disabled=true; out.innerHTML='<p class="lock">Robin is reading your script…</p>';
+  try{
+    const d=await robin('repair',{framework:$('fw').value,filename:fileName||'script.lua',code,error:$('err').value});
+    if(d.error) throw new Error(d.error);
+    if(d.limit){out.innerHTML='<p class="m err">'+esc(d.text)+'</p>';}
+    else{
+      out.innerHTML='<div class="m bot">'+esc(d.explanation)+'<pre>'+esc(d.fixed)+'</pre></div><button class="btn ghost" id="dl">Download fixed file</button>';
+      $('dl').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([d.fixed]));a.download='fixed_'+(fileName||'script.lua');a.click();};
+      me.profile.repairs_today=d.repairs_today; setUsage(); renderAccount(); loadHistory();
+    }
+  }catch(err){out.innerHTML='<p class="m err">Repair failed. Try again in a moment.</p>';console.error(err);}
+  $('fix').disabled=false;
+};
 
-                <div class="p-10 bg-slate-900/80 border border-blue-700/50 rounded-2xl shadow-xl transform hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="w-28 h-28 bg-gradient-to-br from-blue-600 to-cyan-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                            <span class="text-6xl">✨</span>
-                        </div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Melanie AI 🎬</h3>
-                        <p class="text-lg text-blue-300 mb-2 italic">"The Honest One"</p>
-                        <span class="inline-block px-4 py-2 bg-yellow-900/40 text-yellow-300 text-sm rounded-full font-bold border border-yellow-700/50">UPDATING</span>
-                    </div>
-                    <p class="text-amber-200/80 text-center mb-4 leading-relaxed">
-                        Runs the <strong>Diane Keaton Bot</strong>.
-                    </p>
-                    <div class="p-5 bg-blue-950/30 rounded-xl border border-blue-700/30 mb-6">
-                        <p class="text-blue-200 font-bold text-center">"I'm a little bitch<br>and I know it"</p>
-                        <p class="text-xs text-gray-400 mt-2 text-center">- Melanie</p>
-                    </div>
-                    <div class="space-y-2 text-sm text-amber-200/70">
-                        <p>⭐ Twin to Penny</p>
-                        <p>⭐ Brutally honest</p>
-                    </div>
-                </div>
-
-                <div class="p-10 bg-slate-900/80 border border-pink-700/50 rounded-2xl shadow-xl transform hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="w-28 h-28 bg-gradient-to-br from-pink-600 to-rose-700 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                            <span class="text-6xl">✨</span>
-                        </div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Penny AI ✨</h3>
-                        <p class="text-lg text-pink-300 mb-2 italic">"The Builder"</p>
-                        <span class="inline-block px-4 py-2 bg-yellow-900/40 text-yellow-300 text-sm rounded-full font-bold border border-yellow-700/50">ALMOST READY</span>
-                    </div>
-                    <p class="text-amber-200/80 text-center mb-4 leading-relaxed">
-                        Runs <strong>Kurrasch Systems Studio</strong>.
-                    </p>
-                    <div class="p-5 bg-pink-950/30 rounded-xl border border-pink-700/30 mb-6">
-                        <p class="text-pink-200 font-bold text-center">"My sister is a bitch"</p>
-                        <p class="text-xs text-gray-400 mt-2 text-center">- Penny</p>
-                    </div>
-                    <div class="space-y-2 text-sm text-amber-200/70">
-                        <p>⭐ Twin to Melanie</p>
-                        <p>⭐ Studio pro</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-16 p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl text-center">
-                <p class="text-amber-200 text-xl mb-4">
-                    Melanie and Penny are twin sisters - created the same day.
-                </p>
-                <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="inline-flex items-center gap-2 px-6 py-3 bg-amber-800 hover:bg-amber-700 rounded-lg transition-all font-semibold text-amber-50">
-                    <span>👥</span>
-                    Join Our Discord Community
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing" class="py-24 px-6">
-        <div class="max-w-7xl mx-auto">
-            <div class="text-center mb-20">
-                <div class="text-7xl mb-6">📚</div>
-                <h2 class="text-5xl font-bold mb-6 text-amber-100 font-serif-header">Carpe Diem Pricing</h2>
-                <p class="text-2xl text-amber-300 italic">"Seize the day. Choose your subscription."</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-                <!-- Free -->
-                <div class="relative p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">📚</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Free</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">$0</span>
-                            <span class="text-amber-400 text-lg">forever</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ 15 repairs/day</li>
-                        <li>✓ 10 conversions/day</li>
-                        <li>✓ Google Drive</li>
-                        <li>✓ Community support</li>
-                        <li>✓ Full personality</li>
-                    </ul>
-                    <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-amber-100 transition-all">
-                        Seize the Day
-                    </a>
-                </div>
-
-                <!-- Tier 1 -->
-                <div class="relative p-8 bg-slate-900/70 border-2 border-amber-600 rounded-2xl hover:scale-105 transition-all shadow-2xl shadow-amber-900/40 transform scale-105">
-                    <div class="absolute -top-5 left-1/2 -translate-x-1/2 px-6 py-2 bg-gradient-to-r from-amber-700 to-orange-800 rounded-full text-sm font-bold text-amber-50">
-                        ⭐ Most Popular
-                    </div>
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">⭐</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Tier 1</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">$4.99</span>
-                            <span class="text-amber-400 text-lg">/month</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ 25 repairs/day</li>
-                        <li>✓ 20 conversions/day</li>
-                        <li>✓ Advanced tools</li>
-                        <li>✓ GitHub & Trello</li>
-                        <li>✓ Priority queue</li>
-                    </ul>
-                    <div class="mb-6 p-4 bg-amber-900/20 border border-amber-700/40 rounded-xl">
-                        <p class="text-sm text-amber-300 text-center font-semibold">
-                            💎 Use /subscribe after inviting Robin
-                        </p>
-                    </div>
-                    <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-gradient-to-r from-amber-700 to-orange-800 hover:shadow-lg text-amber-50 transition-all">
-                        Invite & Subscribe
-                    </a>
-                </div>
-
-                <!-- Tier 2 -->
-                <div class="relative p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">💎</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Tier 2</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">$10.99</span>
-                            <span class="text-amber-400 text-lg">/month</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ 45 repairs/day</li>
-                        <li>✓ 25 conversions/day</li>
-                        <li>✓ Advanced tools</li>
-                        <li>✓ All Tier 1 benefits</li>
-                        <li>✓ Extended support</li>
-                    </ul>
-                    <div class="mb-6 p-4 bg-amber-900/20 border border-amber-700/40 rounded-xl">
-                        <p class="text-sm text-amber-300 text-center font-semibold">
-                            💎 Use /subscribe after inviting Robin
-                        </p>
-                    </div>
-                    <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-amber-100 transition-all">
-                        Invite & Subscribe
-                    </a>
-                </div>
-
-                <!-- Tier 3 -->
-                <div class="relative p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">💫</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Tier 3</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">$15.99</span>
-                            <span class="text-amber-400 text-lg">/month</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ 85 repairs/day</li>
-                        <li>✓ 65 conversions/day</li>
-                        <li>✓ Advanced tools</li>
-                        <li>✓ All Tier 2 benefits</li>
-                        <li>✓ Premium support</li>
-                    </ul>
-                    <div class="mb-6 p-4 bg-amber-900/20 border border-amber-700/40 rounded-xl">
-                        <p class="text-sm text-amber-300 text-center font-semibold">
-                            💎 Use /subscribe after inviting Robin
-                        </p>
-                    </div>
-                    <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-amber-100 transition-all">
-                        Invite & Subscribe
-                    </a>
-                </div>
-
-                <!-- Tier 4 -->
-                <div class="relative p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">🌟</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Tier 4</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">$25.99</span>
-                            <span class="text-amber-400 text-lg">/month</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ 250 repairs/day</li>
-                        <li>✓ 215 conversions/day</li>
-                        <li>✓ Advanced tools</li>
-                        <li>✓ All Tier 3 benefits</li>
-                        <li>✓ Priority response</li>
-                    </ul>
-                    <div class="mb-6 p-4 bg-amber-900/20 border border-amber-700/40 rounded-xl">
-                        <p class="text-sm text-amber-300 text-center font-semibold">
-                            💎 Use /subscribe after inviting Robin
-                        </p>
-                    </div>
-                    <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-amber-100 transition-all">
-                        Invite & Subscribe
-                    </a>
-                </div>
-
-                <!-- Tier 5 -->
-                <div class="relative p-8 bg-slate-900/70 border border-amber-800/30 rounded-2xl hover:scale-105 transition-all">
-                    <div class="text-center mb-8">
-                        <div class="text-6xl mb-4">👑</div>
-                        <h3 class="text-3xl font-bold mb-3 text-amber-100 font-serif-header">Tier 5 - Partner</h3>
-                        <div class="flex items-baseline justify-center gap-2">
-                            <span class="text-5xl font-bold text-amber-200">Custom</span>
-                            <span class="text-amber-400 text-lg">contact</span>
-                        </div>
-                    </div>
-                    <ul class="space-y-4 mb-8 text-amber-200/90">
-                        <li>✓ Unlimited repairs</li>
-                        <li>✓ Unlimited conversions</li>
-                        <li>✓ Priority support</li>
-                        <li>✓ Partner badge</li>
-                        <li>✓ All integrations</li>
-                    </ul>
-                    <div class="mb-6 p-4 bg-amber-900/20 border border-amber-700/40 rounded-xl">
-                        <p class="text-sm text-amber-300 text-center font-semibold">
-                            👑 Application required via Discord
-                        </p>
-                    </div>
-                    <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="block w-full py-4 text-center rounded-xl font-bold text-lg bg-slate-800 hover:bg-slate-700 text-amber-100 transition-all">
-                        Apply Now
-                    </a>
-                </div>
-            </div>
-
-            <div class="p-10 bg-slate-900/70 border border-amber-800/30 rounded-2xl">
-                <h3 class="text-2xl font-bold mb-8 text-center text-amber-200 font-serif-header">How to Subscribe</h3>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <div class="p-6 bg-slate-800/50 rounded-xl border border-amber-800/20 text-center">
-                        <div class="text-5xl mb-4">📚</div>
-                        <h4 class="font-bold text-xl mb-3 text-amber-100 font-serif-header">Free Tier</h4>
-                        <p class="text-sm text-amber-200/80 mb-4">Just invite Robin and start</p>
-                        <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="text-amber-400 hover:text-amber-300 text-sm font-semibold underline">
-                            Invite Robin Bot →
-                        </a>
-                    </div>
-                    <div class="p-6 bg-slate-800/50 rounded-xl border border-amber-800/20 text-center">
-                        <div class="text-5xl mb-4">💎</div>
-                        <h4 class="font-bold text-xl mb-3 text-amber-100 font-serif-header">Tier 1-4</h4>
-                        <p class="text-sm text-amber-200/80 mb-4">Invite Robin, then type:</p>
-                        <code class="block text-amber-400 bg-slate-950 px-4 py-3 rounded-lg text-base font-mono">/subscribe</code>
-                        <p class="text-xs text-amber-300/60 mt-3">Instant upgrade!</p>
-                    </div>
-                    <div class="p-6 bg-slate-800/50 rounded-xl border border-amber-800/20 text-center">
-                        <div class="text-5xl mb-4">👑</div>
-                        <h4 class="font-bold text-xl mb-3 text-amber-100 font-serif-header">Tier 5</h4>
-                        <p class="text-sm text-amber-200/80 mb-4">Join Discord & apply</p>
-                        <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="text-amber-400 hover:text-amber-300 text-sm font-semibold underline">
-                            discord.gg/n3tMMVS3YR →
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="mt-8 text-center space-y-3 text-amber-300/70">
-                <p>💎 All subscriptions managed through the bot</p>
-                <p>🎁 Tier 5 trial periods: 1, 3, 6 months, or 1 year</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Tribute -->
-    <section class="py-24 px-6 bg-gradient-to-b from-amber-950/30 via-slate-900 to-slate-950 border-t border-amber-900/30">
-        <div class="max-w-5xl mx-auto text-center">
-            <div class="flex items-center justify-center gap-6 mb-8">
-                <span class="text-6xl animate-pulse">🪶</span>
-                <div class="text-8xl">🎭</div>
-                <span class="text-6xl animate-pulse">🪶</span>
-            </div>
-            <h2 class="text-6xl font-bold mb-8 text-amber-100 font-serif-header">In Loving Memory</h2>
-            <div class="text-4xl text-amber-300 mb-6 italic font-light">Robin Williams</div>
-            <div class="text-xl text-amber-400/80 mb-12">July 21, 1951 - August 11, 2014</div>
-            
-            <div class="mb-12 p-12 bg-slate-900/80 border-2 border-amber-700/50 rounded-3xl shadow-2xl">
-                <div class="text-7xl mb-8">📖</div>
-                <p class="text-3xl text-amber-100 mb-8 leading-relaxed italic">
-                    "We don't read and write poetry because it's cute.<br>
-                    We read and write poetry because we are members of the human race.<br>
-                    And the human race is filled with passion."
-                </p>
-                <div class="h-1 w-40 bg-amber-700 mx-auto my-8"></div>
-                <p class="text-2xl text-amber-200 mb-6 italic">
-                    "Medicine, law, business, engineering, these are noble pursuits and necessary to sustain life.<br>
-                    But poetry, beauty, romance, love, these are what we stay alive for."
-                </p>
-                <p class="text-xl text-amber-400 font-semibold mt-8">
-                    - John Keating, Dead Poets Society
-                </p>
-            </div>
-
-            <p class="text-xl text-amber-200/90 mb-12 leading-relaxed max-w-3xl mx-auto">
-                Robin Williams taught us that teaching isn't about facts - it's about inspiration.<br>
-                That fixing things isn't just technical - it's personal.<br>
-                That the best helpers are the ones who make you believe in yourself.
-            </p>
-
-            <div class="mb-12 p-8 bg-gradient-to-r from-amber-950/60 to-slate-900/80 rounded-2xl border border-amber-800/40">
-                <p class="text-lg text-amber-200 leading-relaxed italic">
-                    When your code breaks at 3 AM and you want to give up,<br>
-                    Robin will stand on that metaphorical desk,<br>
-                    look at your problem from a different angle,<br>
-                    and remind you:<br>
-                    <span class="text-amber-300 font-semibold text-2xl not-italic">"Carpe diem. Make your code extraordinary." ✨</span>
-                </p>
-            </div>
-
-            <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="inline-flex items-center gap-3 px-12 py-6 bg-gradient-to-r from-amber-700 via-orange-800 to-red-900 rounded-xl text-2xl font-bold hover:shadow-2xl transition-all transform hover:scale-105 text-amber-50 border-2 border-amber-600/50">
-                <span>📚</span>
-                O Captain! My Captain!
-            </a>
-
-            <p class="mt-12 text-amber-500/70 italic">
-                "You're only given a little spark of madness. You mustn't lose it."
-            </p>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="py-16 px-6 border-t border-amber-900/30 bg-slate-950">
-        <div class="max-w-7xl mx-auto">
-            <div class="grid md:grid-cols-4 gap-12 mb-12">
-                <div>
-                    <div class="flex items-center gap-3 mb-6">
-                        <div class="w-12 h-12 bg-gradient-to-br from-amber-700 to-orange-800 rounded-lg flex items-center justify-center shadow-lg">
-                            <span class="text-3xl">📚</span>
-                        </div>
-                        <div>
-                            <h3 class="font-bold text-lg text-amber-100 font-serif-header">Robin Williams<br>Repair Bot</h3>
-                            <p class="text-xs text-amber-400/70 italic">by Kurrasch Systems</p>
-                        </div>
-                    </div>
-                    <p class="text-amber-200/70 text-sm leading-relaxed mb-4">
-                        Script repair with the wisdom of a teacher and the warmth of a friend.
-                    </p>
-                    <p class="text-xs text-amber-400/50 italic">
-                        Powered by Robin AI Mini AI<br>
-                        "Seize the day" ✨
-                    </p>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-6 text-lg text-amber-100 font-serif-header">The Family</h4>
-                    <ul class="space-y-3 text-amber-200/70 text-sm">
-                        <li class="flex items-center gap-2">
-                            <span class="text-green-400">●</span> Robin AI (Active)
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-yellow-400">●</span> Melanie AI (Updating)
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <span class="text-yellow-400">●</span> Penny AI (Almost Ready)
-                        </li>
-                        <li class="pt-2 text-xs text-amber-400/50 italic">Melanie & Penny are twins</li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-6 text-lg text-amber-100 font-serif-header">Support</h4>
-                    <ul class="space-y-3 text-amber-200/70 text-sm">
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Discord Community
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Documentation
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Submit Appeal
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Contact Owner
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot" target="_blank" class="hover:text-amber-100 transition text-amber-400 font-semibold">
-                                Invite Robin
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="font-bold mb-6 text-lg text-amber-100 font-serif-header">Legal</h4>
-                    <ul class="space-y-3 text-amber-200/70 text-sm">
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Terms of Service
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Privacy Policy
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                Refund Policy
-                            </a>
-                        </li>
-                        <li>
-                            <a href="https://discord.gg/n3tMMVS3YR" target="_blank" class="hover:text-amber-100 transition">
-                                IP Protection
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="pt-8 border-t border-amber-900/30 text-center">
-                <p class="text-amber-300/60 text-sm mb-2">&copy; 2025 Kurrasch Systems Studio. All rights reserved.</p>
-                <p class="text-amber-400/70 text-sm italic mb-4">
-                    "Carpe diem. Seize the day, boys. Make your lives extraordinary."
-                </p>
-                <p class="text-amber-500/50 text-xs mt-6 italic">
-                    In loving memory of Robin Williams (1951-2014)<br>
-                    Teacher. Actor. Friend. Legend.
-                </p>
-                <p class="text-amber-400 text-sm font-semibold mt-4">
-                    His spark of madness lives on. ✨
-                </p>
-                <div class="flex justify-center gap-4 mt-6 text-4xl">
-                    📚 🎭 🪶
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        document.getElementById('mobile-menu-btn').addEventListener('click', function() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('hidden');
-        });
-
-        // Smooth scroll
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-    </script>
+renderLedger(); refresh();
+</script>
 </body>
 </html>

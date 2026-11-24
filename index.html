@@ -159,6 +159,8 @@ footer nav a{margin:0 8px}
 .clist li span{color:var(--dim);font-size:13px;text-align:right}
 .prose pre{background:#0d0905;padding:10px;border-radius:3px;overflow:auto;font:12.5px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;color:var(--chalk)}
 .prose code,.dcard code,#ppStatus code{color:var(--chalk)}
+.quote{margin:14px 0 0;padding-left:12px;border-left:3px solid var(--brass);font-style:italic;color:var(--chalk)}
+.quote cite{display:block;font-size:13px;color:var(--dim);font-style:normal;margin-top:2px}
 </style>
 </head>
 <body>
@@ -301,8 +303,8 @@ print(coords.x, coords.y)</pre>
 <div class="wrap pagehead"><h1>The faculty</h1><p>Three AIs from Kurrasch Systems, each with a different classroom.</p></div>
 <div class="wrap" style="padding-bottom:70px"><div class="fac">
   <div><h3>Robin AI</h3><em>Script repair · in session</em><p>Runs the Robin Williams Repair Bot. Patient at 3 AM, curious about your bug, and fond of a good explanation.</p><p style="margin-top:14px"><a href="/bot">Visit the classroom</a></p></div>
-  <div><h3>Melanie AI</h3><em>The Diane Keaton Bot · updating</em><p>The honest one. Twin sister to Penny, and not shy about telling you what she thinks.</p></div>
-  <div><h3>Penny AI</h3><em>Kurrasch Systems Studio · almost ready</em><p>The builder. Melanie’s twin, created the same day.</p></div>
+  <div><h3>Melanie AI</h3><em>The Diane Keaton Bot · updating</em><p>The honest one. Twin sister to Penny, and not shy about telling you what she thinks.</p><blockquote class="quote">“I’m a little bitch and I know it”<cite>Melanie</cite></blockquote></div>
+  <div><h3>Penny AI</h3><em>Kurrasch Systems Studio · almost ready</em><p>The builder. Melanie’s twin, created the same day.</p><blockquote class="quote">“My sister is a bitch”<cite>Penny</cite></blockquote></div>
 </div></div>
 </template>
 <template id="t-docs">
@@ -485,10 +487,10 @@ function notice(m){const n=document.getElementById('notice'); if(n){n.textConten
 const INVITE='https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot%20applications.commands', DISCORD='https://discord.gg/n3tMMVS3YR';
 const PLANS=[
  {id:'free',name:'Free',price:'$0',per:' forever',r:25,c:30,x:'Community support'},
- {id:'tier1',name:'Tier 1',price:'$4.99',per:'/mo',r:25,c:20,x:'Priority queue'},
- {id:'tier2',name:'Tier 2',price:'$10.99',per:'/mo',r:45,c:25,x:'Everything in Tier 1, extended support'},
- {id:'tier3',name:'Tier 3',price:'$15.99',per:'/mo',r:85,c:65,x:'Everything in Tier 2, premium support'},
- {id:'tier4',name:'Tier 4',price:'$25.99',per:'/mo',r:250,c:215,x:'Everything in Tier 3, priority response'},
+ {id:'tier1',name:'Tier 1',price:'$4.99',per:'/mo',r:45,c:50,x:'Priority queue'},
+ {id:'tier2',name:'Tier 2',price:'$10.99',per:'/mo',r:75,c:90,x:'Everything in Tier 1, extended support'},
+ {id:'tier3',name:'Tier 3',price:'$15.99',per:'/mo',r:120,c:150,x:'Everything in Tier 2, premium support'},
+ {id:'tier4',name:'Tier 4',price:'$25.99',per:'/mo',r:300,c:350,x:'Everything in Tier 3, priority response'},
  {id:'tier5',name:'Tier 5 Partner',price:'Custom',per:'',r:'Unlimited',c:'Unlimited',x:'Partner badge, priority support'}];
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));

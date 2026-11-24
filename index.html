@@ -147,6 +147,18 @@ footer nav a{margin:0 8px}
 .lessonnav button[aria-current=true]{border-color:var(--brass);color:var(--chalk)}
 .lesson h3{font-size:28px;margin-bottom:12px}
 @media(max-width:900px){.cdetail,.viewer{grid-template-columns:1fr}.cbuy{position:static}}
+.loginbox{max-width:420px;display:grid;gap:12px}
+.loginbox .btn{width:100%;text-align:center;padding:12px 18px;font-size:16px}
+.soon{font-size:12px;color:var(--brass);margin-left:8px;font-weight:400}
+.dgrid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.dcard{border:1px solid #5a4326;background:var(--oak);padding:20px;border-radius:3px}
+.dcard h2{font-size:24px;margin:0 0 10px;font-style:normal}
+.dcard .big{font:30px "IM Fell English",serif;margin:0 0 8px}
+.clist{list-style:none;margin:0 0 14px;padding:0}
+.clist li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #3d2c1b;font-size:15px}
+.clist li span{color:var(--dim);font-size:13px;text-align:right}
+.prose pre{background:#0d0905;padding:10px;border-radius:3px;overflow:auto;font:12.5px/1.5 ui-monospace,Menlo,monospace;white-space:pre-wrap;color:var(--chalk)}
+.prose code,.dcard code,#ppStatus code{color:var(--chalk)}
 </style>
 </head>
 <body>
@@ -278,8 +290,8 @@ print(coords.x, coords.y)</pre>
 </div>
 <section><div class="wrap faq">
   <h2>Questions</h2>
-  <h3>How do I pay?</h3><p>Plans are monthly subscriptions paid through Stripe. Robin never sees your card details.</p>
-  <h3>How do I cancel?</h3><p>Open Robin’s desk, go to Account and choose Manage billing, or run <code>/billing</code> in Discord.</p>
+  <h3>How do I pay?</h3><p>Plans are monthly subscriptions paid through PayPal. Robin never sees your payment details.</p>
+  <h3>How do I cancel?</h3><p>Open your <a href="/dashboard">dashboard</a> and press Cancel subscription, or cancel in your PayPal account.</p>
   <h3>Do the limits apply on the site and in Discord?</h3><p>They’re shared. A repair on the site and a repair in Discord both count toward the same daily total, which resets at midnight UTC.</p>
   <h3>Refunds?</h3><p>See the <a href="/refunds">refund policy</a>.</p>
 </div></section>
@@ -294,7 +306,10 @@ print(coords.x, coords.y)</pre>
 </div></div>
 </template>
 <template id="t-docs">
-<div class="wrap pagehead"><h1>Docs</h1><p>Everything Robin can do, and how to get the best answers out of him.</p></div><div class="wrap prose"><h2>Getting started</h2><p><a href="/invite">Add Robin to your server</a>, then type <code>/ask</code> or <code>/repair</code> in a channel he can see. You can also use Robin without Discord in the <a href="/bot">Robin’s desk</a>.</p><h2>Commands</h2><ul><li><code>/ask</code> asks a scripting question.</li><li><code>/repair</code> fixes a script. Attach a .lua, .luau, .js, .txt or .cs file. Pick the platform if the file name doesn’t make it obvious. <code>/diagnose</code> explains an error message in plain English, and <code>/convert</code> converts a script between platforms.</li><li><code>/stats</code> shows your plan and today’s usage.</li><li><code>/subscribe</code> gives you a checkout link for a paid plan.</li><li><code>/billing</code> opens your billing page to change or cancel.</li></ul><h2>Conversions</h2><p>Robin’s desk has a Convert tab for moving a FiveM script between frameworks, such as ESX to QBCore, QBCore to ESX or QBCore to Qbox. Robin marks anything that has no direct equivalent with a TODO comment so you know what to finish by hand.</p><h2>Classes</h2><p>Robin teaches paid classes. Each class is a one-time payment, with no subscription. After you pay, the class unlocks under <a href="/learn">My classes</a>, where you can read the lessons and tick them off as you go. Browse them on the <a href="/classes">Classes</a> page.</p><h2>Files and limits</h2><p>Robin reads .lua, .luau, .js, .json, .cfg, .txt and .xml files up to 100 KB. For bigger scripts, paste the part that’s failing. Daily limits depend on your <a href="/pricing">plan</a> and reset at midnight UTC. Repair limits are shared between Discord and the site.</p><h2>Getting better answers</h2><ul><li>Include the exact error message and the file it came from.</li><li>Trim the script to the function that’s failing, plus anything it calls.</li><li>Say which framework you’re on, such as ESX, QBCore or Qbox.</li><li>Test every fix on a development server before it goes live. Robin can be wrong.</li></ul><h2>What Robin won’t do</h2><p>Robin won’t help bypass licensing, escrow or encryption, leak paid scripts, or write cheats, exploits or malware. See <a href="/ip-protection">IP protection</a>.</p><h2>Troubleshooting</h2><ul><li><b>Commands don’t appear.</b> Give Discord a minute, then restart the app. Make sure Robin was added with the commands permission.</li><li><b>Robin looks offline.</b> He answers commands on demand, so he can show as offline and still reply.</li><li><b>My plan didn’t change after paying.</b> It can take a few seconds. Run <code>/stats</code>, and if it still shows Free, <a href="/appeal">send an appeal</a>.</li></ul></div>
+<div class="wrap pagehead"><h1>Docs</h1><p>Everything Robin can do, and how to get the best answers out of him.</p></div><div class="wrap prose"><h2>Getting started</h2><p><a href="/invite">Add Robin to your server</a>, then type <code>/ask</code> or <code>/repair</code> in a channel he can see. You can also use Robin without Discord in the <a href="/bot">Robin’s desk</a>.</p><h2>Commands</h2><ul><li><code>/ask</code> asks a scripting question.</li><li><code>/repair</code> fixes a script. Attach a .lua, .luau, .js, .txt or .cs file. Pick the platform if the file name doesn’t make it obvious. <code>/diagnose</code> explains an error message in plain English, and <code>/convert</code> converts a script between platforms.</li><li><code>/stats</code> shows your plan and today’s usage.</li><li><code>/subscribe</code> gives you a checkout link for a paid plan.</li><li><code>/billing</code> links to your dashboard, where you can change or cancel your plan.</li></ul><h2>Conversions</h2><p>Robin’s desk has a Convert tab for moving a FiveM script between frameworks, such as ESX to QBCore, QBCore to ESX or QBCore to Qbox. Robin marks anything that has no direct equivalent with a TODO comment so you know what to finish by hand.</p><h2>API</h2><p>Create a key on your <a href="/dashboard">dashboard</a>, then call Robin from your own tools. Calls count toward your plan’s daily limits.</p><pre>curl -X POST https://tgqlddaztyoyfwpxixli.supabase.co/functions/v1/robin/repair \
+  -H "x-api-key: rk_live_YOUR_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"code": "local p = GetPlayerPed(-1)", "platform": "fivem"}'</pre><ul><li><code>POST /repair</code> with <code>code</code> (optional <code>platform</code> and <code>filename</code>)</li><li><code>POST /convert</code> with <code>code</code> and <code>target</code> (fivem, roblox, lspdfr or lcpdfr)</li><li><code>GET /usage</code> shows today’s usage</li></ul><h2>Signing in</h2><p>Sign in with Discord. Your plan, repairs and classes are tied to your Discord account, and your <a href="/dashboard">dashboard</a> shows which communities you use Robin in. Sign-in with X and Google is coming soon.</p><h2>Classes</h2><p>Robin teaches paid classes. Each class is a one-time payment, with no subscription. After you pay, the class unlocks under <a href="/learn">My classes</a>, where you can read the lessons and tick them off as you go. Browse them on the <a href="/classes">Classes</a> page.</p><h2>Files and limits</h2><p>Robin reads .lua, .luau, .js, .json, .cfg, .txt and .xml files up to 100 KB. For bigger scripts, paste the part that’s failing. Daily limits depend on your <a href="/pricing">plan</a> and reset at midnight UTC. Repair limits are shared between Discord and the site.</p><h2>Getting better answers</h2><ul><li>Include the exact error message and the file it came from.</li><li>Trim the script to the function that’s failing, plus anything it calls.</li><li>Say which framework you’re on, such as ESX, QBCore or Qbox.</li><li>Test every fix on a development server before it goes live. Robin can be wrong.</li></ul><h2>What Robin won’t do</h2><p>Robin won’t help bypass licensing, escrow or encryption, leak paid scripts, or write cheats, exploits or malware. See <a href="/ip-protection">IP protection</a>.</p><h2>Troubleshooting</h2><ul><li><b>Commands don’t appear.</b> Give Discord a minute, then restart the app. Make sure Robin was added with the commands permission.</li><li><b>Robin looks offline.</b> He answers commands on demand, so he can show as offline and still reply.</li><li><b>My plan didn’t change after paying.</b> It can take a few seconds. Run <code>/stats</code>, and if it still shows Free, <a href="/appeal">send an appeal</a>.</li></ul></div>
 </template>
 <template id="t-invite">
 
@@ -396,6 +411,11 @@ print(coords.x, coords.y)</pre>
       <div><button class="btn" style="margin:0">Give access</button></div></div>
       <p id="gmsg" class="lock"></p></form>
     <h2>Enrollments</h2><div id="admEnroll"></div>
+    <h2>Communities using Robin</h2>
+    <div class="scroll"><table><thead><tr><th>Server</th><th>People</th><th>Commands</th><th>Last seen</th></tr></thead><tbody id="admComm"></tbody></table></div>
+    <h2>PayPal</h2>
+    <div id="ppStatus" class="lock">Checking…</div>
+    <p><button class="btn" id="ppSetup">Create PayPal plans</button></p>
   </div>
 </div>
 </template>
@@ -411,7 +431,7 @@ print(coords.x, coords.y)</pre>
 <h2>Check the output</h2><p>Robin is an AI and can be wrong. Read and test any fix before you use it on a live server or game. The service is provided as is, without warranties.</p>
 <h2>What you can’t do</h2><ul><li>Submit scripts you don’t have the right to modify, or ask Robin to bypass licensing, escrow or encryption.</li><li>Ask for cheats, exploits, malware or anything intended to harm others.</li><li>Abuse the service, resell access, or try to get around usage limits.</li></ul>
 <h2>Your content</h2><p>You keep ownership of the scripts you submit. You give us permission to process them to provide the service, as described in the privacy policy.</p>
-<h2>Plans and payment</h2><p>Paid plans are monthly subscriptions billed through Stripe and renew until you cancel. Daily limits reset at midnight UTC. See the refund policy for refunds.</p>
+<h2>Plans and payment</h2><p>Paid plans are monthly subscriptions billed through PayPal and renew until you cancel. Daily limits reset at midnight UTC. See the refund policy for refunds.</p>
 <h2>Suspension</h2><p>We may limit or suspend access if these terms are broken. You can ask about a suspension in our Discord.</p>
 <h2>Unofficial tribute</h2><p>This service is a fan tribute. It is not affiliated with or endorsed by the Williams family or estate, or the makers of Dead Poets Society.</p>
 <h2>Contact</h2><p>Reach us in our <a href="https://discord.gg/n3tMMVS3YR">Discord community</a>.</p></div>
@@ -419,21 +439,34 @@ print(coords.x, coords.y)</pre>
 <template id="t-privacy">
 
 <div class="wrap pagehead"><h1>Privacy Policy</h1><p>Last updated November 21, 2026.</p></div><div class="wrap prose">
-<h2>What we keep</h2><ul><li>Your Discord user ID and display name, when you sign in or use the bot.</li><li>Your plan and daily usage counts.</li><li>Your repair and conversion history: the filename, platform, Robin’s notes and the resulting script.</li><li>Which classes you’ve taken and your progress through the lessons.</li><li>Anything you write in an appeal or a partner application.</li><li>A Stripe customer and subscription ID if you subscribe.</li></ul>
-<h2>What we don’t keep</h2><p>Card details go straight to Stripe and never reach us. We don’t store the text of your chat messages.</p>
-<h2>Who processes your content</h2><p>The messages and scripts you send are passed to Anthropic’s API to generate Robin’s replies. Our database and functions run on Supabase, and payments run on Stripe.</p>
+<h2>What we keep</h2><ul><li>Your Discord user ID and display name, when you sign in or use the bot. Our login provider also keeps the email address Discord shares when you sign in.</li><li>Which communities (Discord servers) you use Robin in and how often, so your dashboard can show them.</li><li>Your plan and daily usage counts.</li><li>Your repair and conversion history: the filename, platform, Robin’s notes and the resulting script.</li><li>Which classes you’ve taken and your progress through the lessons.</li><li>Anything you write in an appeal or a partner application.</li><li>Your PayPal subscription ID if you subscribe.</li></ul>
+<h2>What we don’t keep</h2><p>Payment details go straight to PayPal and never reach us. We don’t store the text of your chat messages.</p>
+<h2>Who processes your content</h2><p>The messages and scripts you send are passed to Anthropic’s API to generate Robin’s replies. Our database and functions run on Supabase, and payments run on PayPal.</p>
 <h2>Cookies and storage</h2><p>The site keeps your sign-in session in your browser so you stay logged in. We don’t use advertising trackers.</p>
 <h2>Your choices</h2><p>You can ask us to delete your data, including your repair history, in our <a href="https://discord.gg/n3tMMVS3YR">Discord community</a>. Don’t submit scripts containing passwords, API keys or other secrets.</p>
 </div>
 </template>
 <template id="t-refunds">
 <div class="wrap pagehead"><h1>Refund Policy</h1><p>Last updated November 21, 2026.</p></div><div class="wrap prose">
-<h2>Cancelling</h2><p>You can cancel any time from Account on Robin’s desk, or with <code>/billing</code> in Discord. Your plan stays active until the end of the period you’ve paid for.</p>
+<h2>Cancelling</h2><p>You can cancel any time from your dashboard, or in your PayPal account. Your plan stays active until the end of the period you’ve paid for.</p>
 <h2>Refunds</h2><p>If something went wrong with a charge, or the service didn’t work for you, ask in our <a href="https://discord.gg/n3tMMVS3YR">Discord community</a> within 7 days of the payment and we’ll look at it case by case.</p>
 <h2>Classes</h2><p>Classes are one-time payments. If something went wrong with a class purchase, ask in our <a href="https://discord.gg/n3tMMVS3YR">Discord community</a> within 7 days of paying and we’ll look at it case by case.</p><h2>Free plan</h2><p>The free plan costs nothing and can be used as long as you like, within its daily limits.</p></div>
 </template>
 <template id="t-404">
 <div class="wrap pagehead" style="padding-bottom:80px"><h1>That page isn’t on the syllabus.</h1><p style="margin-bottom:20px">The link may be old or mistyped.</p><a class="btn" href="/">Back to the front of the class</a></div>
+</template>
+<template id="t-login">
+<div class="wrap pagehead"><h1>Sign in</h1><p>Sign in to use your dashboard, keep your plan and history, and take classes.</p></div>
+<div class="wrap" style="padding-bottom:70px"><div class="loginbox">
+  <button class="btn seal" id="loginDiscord">Continue with Discord</button>
+  <button class="btn ghost" disabled aria-disabled="true">Continue with X <span class="soon">Coming soon</span></button>
+  <button class="btn ghost" disabled aria-disabled="true">Continue with Google <span class="soon">Coming soon</span></button>
+  <p class="lock">Discord sign-in is required for now. Your plan, repairs and classes are tied to your Discord account, and it lets your dashboard show which communities you use Robin in. Robin never reads your messages.</p>
+</div></div>
+</template>
+<template id="t-dashboard">
+<div class="wrap pagehead"><h1>Dashboard</h1><p id="dashHello">Your plan, your activity and where you use Robin.</p></div>
+<div class="wrap" style="padding-bottom:70px" id="dashBox"><p class="lock">Loading…</p></div>
 </template>
 <template id="t-classes">
 <div class="wrap pagehead"><h1>Classes</h1><p>Learn to write scripts, not just fix them. Robin teaches classes you can take one at a time, and you pay once for each class you take.</p></div>
@@ -451,12 +484,12 @@ const sb=(typeof supabase!=='undefined')?supabase.createClient('https://tgqlddaz
 function notice(m){const n=document.getElementById('notice'); if(n){n.textContent=m;n.hidden=false;}}
 const INVITE='https://discord.com/oauth2/authorize?client_id=969376738100535316&permissions=2252194953951744&integration_type=0&scope=bot%20applications.commands', DISCORD='https://discord.gg/n3tMMVS3YR';
 const PLANS=[
- {id:'free',name:'Free',price:'$0',per:' forever',r:15,c:10,x:'Google Drive, community support'},
- {id:'tier1',name:'Tier 1',price:'$4.99',per:'/mo',r:25,c:20,x:'GitHub and Trello, priority queue'},
+ {id:'free',name:'Free',price:'$0',per:' forever',r:25,c:30,x:'Community support'},
+ {id:'tier1',name:'Tier 1',price:'$4.99',per:'/mo',r:25,c:20,x:'Priority queue'},
  {id:'tier2',name:'Tier 2',price:'$10.99',per:'/mo',r:45,c:25,x:'Everything in Tier 1, extended support'},
  {id:'tier3',name:'Tier 3',price:'$15.99',per:'/mo',r:85,c:65,x:'Everything in Tier 2, premium support'},
  {id:'tier4',name:'Tier 4',price:'$25.99',per:'/mo',r:250,c:215,x:'Everything in Tier 3, priority response'},
- {id:'tier5',name:'Tier 5 Partner',price:'Custom',per:'',r:'Unlimited',c:'Unlimited',x:'Partner badge, all integrations'}];
+ {id:'tier5',name:'Tier 5 Partner',price:'Custom',per:'',r:'Unlimited',c:'Unlimited',x:'Partner badge, priority support'}];
 const $=id=>document.getElementById(id);
 const esc=t=>String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const App={session:null,me:null};
@@ -471,7 +504,7 @@ async function robinX(action,payload={}){
 async function signIn(){
   if(!sb){ notice('The Supabase library did not load, so sign-in is off. An ad blocker or network filter may be blocking cdn.jsdelivr.net.'); return; }
   try{
-    const {data,error}=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:location.origin+location.pathname,skipBrowserRedirect:true}});
+    const {data,error}=await sb.auth.signInWithOAuth({provider:'discord',options:{redirectTo:location.origin+(location.pathname==='/login'?'/dashboard':location.pathname),skipBrowserRedirect:true}});
     if(error||!data||!data.url) throw (error||new Error('No sign-in link came back from Supabase.'));
     try{
       const r=await fetch(data.url,{redirect:'manual'});
@@ -515,8 +548,8 @@ const tier=()=>App.me?.profile?.tier||'free';
 function renderNav(){
   const s=App.session, el=$('navAuth'); if(!el) return;
   const u=s?.user?.user_metadata, name=u?.full_name||u?.name||'Signed in';
-  el.innerHTML=s?`<span class="usage">${esc(name)}</span> <button class="btn ghost" id="out">Sign out</button>`:'<button class="btn" id="inBtn">Sign in</button>';
-  if(s) $('out').onclick=()=>sb.auth.signOut(); else $('inBtn').onclick=signIn;
+  el.innerHTML=s?`<a href="/dashboard">Dashboard</a> <span class="usage">${esc(name)}</span> <button class="btn ghost" id="out">Sign out</button>`:'<a class="btn" href="/login">Sign in</a>';
+  if(s) $('out').onclick=()=>sb.auth.signOut();
 }
 async function initAuth(){
   if(!sb){ notice('The Supabase library did not load, so sign-in and the bot are off. An ad blocker or network filter may be blocking cdn.jsdelivr.net.'); renderNav(); return; }
@@ -564,7 +597,7 @@ function renderAccount(){
    `<h3 style="font-size:24px">${plan.name} plan</h3>
    <p class="usage" style="margin:8px 0 0">Repairs today: ${p.repairs_today} / ${l===Infinity?'unlimited':l}</p>
    <div class="bar"><i style="width:${l===Infinity?4:Math.min(100,p.repairs_today/l*100)}%"></i></div>
-   ${p.stripe_customer_id?'<button class="btn ghost" id="portal">Manage billing</button>':'<a class="btn" href="/pricing">See plans</a>'}
+   <a class="btn ghost" href="/dashboard">Manage plan</a>
    <p class="lock">Usage resets every day at midnight UTC and is shared between this page and the Discord bot.</p>`;
   const b=$('portal'); if(b) b.onclick=async()=>{try{const d=await robin('portal');location.href=d.url;}catch(e){b.textContent='Unavailable';}};
 }
@@ -669,11 +702,12 @@ function renderLedger(){
   $('ledger').querySelectorAll('[data-buy]').forEach(b=>b.onclick=async()=>{
     if(!App.session) return signIn();
     b.disabled=true;
-    try{const d=await robin('checkout',{tier:b.dataset.buy}); if(d.error) throw new Error(d.error); location.href=d.url;}
-    catch(e){b.disabled=false;b.textContent='Unavailable';console.error(e);}
+    try{const d=await robinX('paypal_subscribe',{tier:b.dataset.buy}); if(d.error) throw new Error(d.error); location.href=d.url;}
+    catch(e){b.disabled=false; let m='Could not start checkout.'; try{m=(await errInfo(e)).msg||m;}catch(_){} notice(m); console.error(e);}
   });
 }
-window.onAuth=async()=>{await loadMe();renderLedger();};
+const want=new URLSearchParams(location.search).get('plan');
+window.onAuth=async()=>{await loadMe();renderLedger(); if(want&&App.session&&!window.__auto){ const b=document.querySelector('[data-buy="'+want+'"]'); if(b){ window.__auto=1; b.click(); } }};
 renderLedger();
 
 };
@@ -733,7 +767,7 @@ async function load(){
   if(!App.session){ $('gate').hidden=false; $('adm').hidden=true; $('deny').hidden=true; return; }
   $('gate').hidden=true;
   try{ D=await robinX('admin_overview'); }catch(e){ $('adm').hidden=true; $('deny').hidden=false; return; }
-  $('deny').hidden=true; $('adm').hidden=false; render(); loadAdminCourses();
+  $('deny').hidden=true; $('adm').hidden=false; render(); loadAdminCourses(); loadAdminComm(); loadAdminPaypal();
 }
 const item=(kind,r,title,body)=>`<div class="item" style="cursor:default"><b>${esc(title)}</b> <span class="lock">${esc(r.status)} · ${new Date(r.created_at).toLocaleString()} · ${esc(r.username||r.discord_id)} (${esc(r.discord_id)})</span><p style="margin:6px 0;white-space:pre-wrap">${esc(body)}</p>${r.note?`<p class="lock">Note: ${esc(r.note)}</p>`:''}<button class="btn ghost" data-k="${kind}" data-id="${r.id}" data-s="approved">Approve</button> <button class="btn ghost" data-k="${kind}" data-id="${r.id}" data-s="${kind==='appeal'?'denied':'declined'}">${kind==='appeal'?'Deny':'Decline'}</button></div>`;
 function render(){
@@ -757,6 +791,22 @@ $('tierForm').onsubmit=async e=>{
 };
 $('gateBtn').onclick=signIn;
 
+async function loadAdminPaypal(){
+  const el=$('ppStatus'); if(!el) return;
+  try{
+    const d=await robinX('admin_paypal_status');
+    el.innerHTML=`<p>Mode: <b>${esc(d.mode)}</b> · Credentials: ${d.has_credentials?'saved':'<b>missing</b>'} · Connection: ${d.connected?'<b>working</b>':'<b>not working</b> '+esc(d.problem||'')}</p>
+    <p>Plans: ${Object.entries(d.plans).map(([k,v])=>esc(k)+': '+(v?'ready':'not created')).join(' · ')}</p>
+    <p>Webhook: ${d.has_webhook_id?'ID saved':'<b>no ID saved yet</b>'}. In PayPal, add this URL as a webhook and subscribe it to the billing subscription events and “Payment capture completed”: <code>${esc(d.webhook_url)}</code></p>`;
+  }catch(e){ el.textContent='PayPal status could not load.'; }
+}
+$('ppSetup').onclick=async()=>{ const b=$('ppSetup'); b.disabled=true; try{ await robinX('admin_paypal_setup'); }catch(e){ let m='Setup failed.'; try{ m=(await errInfo(e)).msg||m; }catch(_){} notice(m); } b.disabled=false; loadAdminPaypal(); };
+async function loadAdminComm(){
+  try{
+    const d=await robinX('admin_communities');
+    $('admComm').innerHTML=d.items.length?d.items.map(g=>`<tr><td>${esc(g.name||g.guild_id)}</td><td>${g.users}</td><td>${g.uses}</td><td>${esc(new Date(g.last_seen).toLocaleDateString())}</td></tr>`).join(''):'<tr><td colspan="4" class="lock">No communities yet.</td></tr>';
+  }catch(_){}
+}
 let COURSES=[];
 function parseLessons(t){ const out=[]; let cur=null; String(t||'').split('\n').forEach(line=>{ const m=line.match(/^===\s*(.+)$/); if(m){ cur={title:m[1].trim(),body:''}; out.push(cur); } else if(cur){ cur.body+=line+'\n'; } }); out.forEach(l=>{ l.body=l.body.trim(); }); return out; }
 const fmtLessons=a=>(a||[]).map(l=>'=== '+l.title+'\n'+l.body).join('\n\n');
@@ -829,10 +879,15 @@ INITS['/class']=function(slug){
   };
 };
 INITS['/learn']=function(){
-  const qs=new URLSearchParams(location.search); let current=qs.get('c'), tries=0, data=null, active=0;
+  const qs=new URLSearchParams(location.search); let current=qs.get('c'), tries=0, data=null, active=0, captured=false;
   const out=$('learnBox');
   async function list(){
     if(!App.session){ out.innerHTML='<p>Sign in with Discord to see your classes.</p><button class="btn" id="li">Sign in with Discord</button>'; $('li').onclick=signIn; return; }
+    if(!captured&&qs.get('paypal')==='order'&&qs.get('token')){
+      captured=true; out.innerHTML='<p class="lock">Confirming your payment…</p>';
+      try{ await robinX('paypal_capture',{order_id:qs.get('token')}); qs.set('enrolled','1'); }
+      catch(e){ let m='We could not confirm the payment.'; try{ m=(await errInfo(e)).msg||m; }catch(_){} out.innerHTML='<p class="m err">'+esc(m)+'</p><p><a href="/classes">Back to classes</a></p>'; return; }
+    }
     let d; try{ d=await robinX('my_courses'); }catch(e){ out.innerHTML='<p class="m err">Your classes could not load.</p>'; return; }
     if(!d.items.length){
       if(qs.get('enrolled')&&tries++<8){ out.innerHTML='<p class="lock">Payment received. Unlocking your class…</p>'; setTimeout(list,2500); return; }
@@ -859,7 +914,67 @@ INITS['/learn']=function(){
   window.onAuth=list;
 };
 
-const ROUTES={"/classes": {"t": "t-classes", "title": "Classes | Robin Williams Repair Bot", "desc": "Paid classes where Robin teaches you to write FiveM and Roblox scripts."}, "/class": {"t": "t-class", "title": "Class | Robin Williams Repair Bot", "desc": "A class taught by Robin."}, "/learn": {"t": "t-learn", "title": "My classes | Robin Williams Repair Bot", "desc": "Your classes and progress."}, "/": {"t": "t-home", "title": "Robin Williams Repair Bot | Script repair for FiveM and Roblox", "desc": "A Discord bot that repairs FiveM and Roblox scripts and teaches you why they broke."}, "/bot": {"t": "t-bot", "title": "Robin’s Desk | Robin Williams Repair Bot", "desc": "Chat with Robin and repair FiveM and Roblox scripts right on the site."}, "/pricing": {"t": "t-pricing", "title": "Plans | Robin Williams Repair Bot", "desc": "Plans and pricing for Robin, the FiveM and Roblox script repair bot."}, "/faculty": {"t": "t-faculty", "title": "Faculty | Robin Williams Repair Bot", "desc": "Meet Robin, Melanie and Penny, the AIs from Kurrasch Systems."}, "/docs": {"t": "t-docs", "title": "Docs | Robin Williams Repair Bot", "desc": "How to use Robin: commands, limits, file types and troubleshooting."}, "/invite": {"t": "t-invite", "title": "Invite Robin | Robin Williams Repair Bot", "desc": "Add the Robin script repair bot to your Discord server."}, "/appeal": {"t": "t-appeal", "title": "Appeals | Robin Williams Repair Bot", "desc": "Ask the owner to review a decision, a plan or a usage limit."}, "/partners": {"t": "t-partners", "title": "Partners | Robin Williams Repair Bot", "desc": "Apply for a Tier 5 partner plan with unlimited repairs and conversions."}, "/admin": {"t": "t-admin", "title": "Admin | Robin Williams Repair Bot", "desc": "Owner dashboard."}, "/ip-protection": {"t": "t-ip-protection", "title": "IP protection | Robin Williams Repair Bot", "desc": "How Robin respects script authors and what to do if you see a problem."}, "/terms": {"t": "t-terms", "title": "Terms of Service | Robin Williams Repair Bot", "desc": "Terms of service for the Robin Williams Repair Bot."}, "/privacy": {"t": "t-privacy", "title": "Privacy Policy | Robin Williams Repair Bot", "desc": "How the Robin Williams Repair Bot handles your data."}, "/refunds": {"t": "t-refunds", "title": "Refund Policy | Robin Williams Repair Bot", "desc": "Refund policy for Robin plans."}, "/404": {"t": "t-404", "title": "Page not found | Robin Williams Repair Bot", "desc": "Page not found."}};
+
+INITS['/login']=function(){
+  $('loginDiscord').onclick=signIn;
+  window.onAuth=function(){ if(App.session){ try{ window.history.replaceState({},'','/dashboard'); }catch(_){} route('/dashboard'); } };
+};
+INITS['/dashboard']=function(){
+  const box=$('dashBox');
+  async function loadKeys(){
+    const el=$('keysBox'); if(!el) return;
+    try{ const d=await robinX('api_keys'); el.innerHTML=d.items.length?d.items.map(k=>`<div class="item" style="cursor:default"><b>${esc(k.name)}</b> <span class="lock">${esc(k.prefix)}… · ${k.last_used?'used '+esc(new Date(k.last_used).toLocaleDateString()):'never used'}</span> <button class="btn ghost" data-revoke="${k.id}">Revoke</button></div>`).join(''):'<p class="lock">No keys yet.</p>'; }
+    catch(e){ el.textContent='Keys could not load.'; }
+  }
+  box.onclick=async e=>{
+    const t=e.target;
+    if(t.id==='cancelSub'){
+      if(!confirm('Cancel your subscription? You keep your plan until the period you already paid for ends.')) return;
+      t.disabled=true;
+      try{ await robinX('paypal_cancel'); window.onAuth(); }
+      catch(err){ t.disabled=false; let m='Could not cancel.'; try{ m=(await errInfo(err)).msg||m; }catch(_){} notice(m); }
+    }
+    if(t.id==='newKey'){
+      const m=$('keyMsg'); t.disabled=true;
+      try{ const d=await robinX('api_key_create',{name:$('keyName').value}); m.innerHTML='<span class="m bot" style="display:block;word-break:break-all;max-width:none">Copy your key now. It will not be shown again.<br><code>'+esc(d.key)+'</code></span>'; $('keyName').value=''; loadKeys(); }
+      catch(err){ let x='Could not create a key.'; try{ x=(await errInfo(err)).msg||x; }catch(_){} m.textContent=x; }
+      t.disabled=false;
+    }
+    const rv=t.closest&&t.closest('[data-revoke]');
+    if(rv){ if(!confirm('Revoke this key? Anything using it will stop working.')) return; try{ await robinX('api_key_revoke',{id:Number(rv.dataset.revoke)}); loadKeys(); }catch(_){} }
+  };
+  window.onAuth=async function(){
+    if(!App.session){ box.innerHTML='<p>Sign in with Discord to see your dashboard.</p><a class="btn" href="/login">Sign in</a>'; return; }
+    const q=new URLSearchParams(location.search);
+    if(q.get('paypal')==='sub'&&q.get('subscription_id')&&!window.__ppDone){
+      window.__ppDone=1; box.innerHTML='<p class="lock">Confirming your payment…</p>';
+      try{ const r=await robinX('paypal_confirm',{subscription_id:q.get('subscription_id')}); if(r.status!=='ACTIVE') notice('PayPal has not finished approving the payment yet. Check back in a minute.'); }
+      catch(err){ let m='We could not confirm the payment.'; try{ m=(await errInfo(err)).msg||m; }catch(_){} notice(m); }
+      try{ window.history.replaceState({},'','/dashboard'); }catch(_){}
+    }
+    let d; try{ d=await robinX('dashboard'); }catch(e){ box.innerHTML='<p class="m err">Your dashboard could not load. Try again in a moment.</p>'; return; }
+    $('dashHello').textContent='Welcome back, '+d.name+'.';
+    const plan=PLANS.find(p=>p.id===d.plan.tier)||PLANS[0], rl=typeof plan.r==='number'?plan.r:Infinity, cl=typeof plan.c==='number'?plan.c:Infinity;
+    const bar=(u,l)=>`<div class="bar"><i style="width:${l===Infinity?4:Math.min(100,u/l*100)}%"></i></div>`;
+    const act=[...d.recent.repairs.map(r=>({t:r.created_at,x:'Repair · '+(r.filename||'script')})),...d.recent.conversions.map(r=>({t:r.created_at,x:'Conversion · '+(r.filename||'script')}))].sort((a,b)=>String(b.t).localeCompare(String(a.t))).slice(0,6);
+    setTimeout(loadKeys,0);
+    box.innerHTML=`<div class="dgrid">
+      <section class="dcard"><h2>Your plan</h2><p class="big">${esc(plan.name)}</p>
+        <p class="lock">Repairs today: ${d.plan.repairs_today} / ${rl===Infinity?'unlimited':rl}</p>${bar(d.plan.repairs_today,rl)}
+        <p class="lock">Conversions today: ${d.plan.conversions_today} / ${cl===Infinity?'unlimited':cl}</p>${bar(d.plan.conversions_today,cl)}
+        ${d.plan.tier_expires?'<p class="lock">Your plan ends on '+esc(new Date(d.plan.tier_expires).toLocaleDateString())+'.</p>':''}<a class="btn ghost" href="/pricing">${d.plan.has_subscription?'See plans':'Change plan'}</a> ${d.plan.has_subscription&&!d.plan.tier_expires?'<button class="btn ghost" id="cancelSub">Cancel subscription</button>':''}</section>
+      <section class="dcard"><h2>Where you use Robin</h2>${d.communities.length?'<ul class="clist">'+d.communities.map(c=>`<li><b>${esc(c.name)}</b><span>${c.uses} command${c.uses===1?'':'s'}<br>last used ${esc(new Date(c.last_used).toLocaleDateString())}</span></li>`).join('')+'</ul>':'<p class="lock">No communities yet. Use a Robin command in a Discord server and it will show up here.</p><a class="btn" href="/invite">Add Robin to a server</a>'}</section>
+      <section class="dcard"><h2>My classes</h2>${d.classes.length?'<ul class="clist">'+d.classes.map(c=>`<li><a href="/learn?c=${esc(c.slug)}">${esc(c.title)}</a><span>${c.done} of ${c.lessons} lessons</span></li>`).join('')+'</ul>':'<p class="lock">You are not in any classes yet.</p>'}<a class="btn ghost" href="/classes">Browse classes</a></section>
+      <section class="dcard"><h2>Recent activity</h2>${act.length?'<ul class="clist">'+act.map(a=>`<li>${esc(a.x)}<span>${esc(new Date(a.t).toLocaleDateString())}</span></li>`).join('')+'</ul>':'<p class="lock">Nothing yet. Try a repair on Robin’s desk or with /repair in Discord.</p>'}<a class="btn ghost" href="/bot">Open Robin’s desk</a></section>
+      <section class="dcard"><h2>API keys</h2><p class="lock">Use Robin from your own tools. Calls count toward your plan’s daily limits. <a href="/docs">API docs</a></p>
+        <div id="keysBox" class="lock">Loading…</div>
+        <div style="display:flex;gap:8px;margin-top:12px"><input type="text" id="keyName" placeholder="Key name" maxlength="40" style="flex:1;background:#17110b;color:var(--chalk);border:1px solid #3d2c1b;border-radius:3px;padding:9px;font:inherit"><button class="btn" id="newKey">Create key</button></div>
+        <div id="keyMsg" class="lock" style="margin-top:10px"></div></section>
+    </div>`;
+  };
+};
+
+const ROUTES={"/login": {"t": "t-login", "title": "Sign in | Robin Williams Repair Bot", "desc": "Sign in to Robin with Discord."}, "/dashboard": {"t": "t-dashboard", "title": "Dashboard | Robin Williams Repair Bot", "desc": "Your plan, activity and communities."}, "/classes": {"t": "t-classes", "title": "Classes | Robin Williams Repair Bot", "desc": "Paid classes where Robin teaches you to write FiveM and Roblox scripts."}, "/class": {"t": "t-class", "title": "Class | Robin Williams Repair Bot", "desc": "A class taught by Robin."}, "/learn": {"t": "t-learn", "title": "My classes | Robin Williams Repair Bot", "desc": "Your classes and progress."}, "/": {"t": "t-home", "title": "Robin Williams Repair Bot | Script repair for FiveM and Roblox", "desc": "A Discord bot that repairs FiveM and Roblox scripts and teaches you why they broke."}, "/bot": {"t": "t-bot", "title": "Robin’s Desk | Robin Williams Repair Bot", "desc": "Chat with Robin and repair FiveM and Roblox scripts right on the site."}, "/pricing": {"t": "t-pricing", "title": "Plans | Robin Williams Repair Bot", "desc": "Plans and pricing for Robin, the FiveM and Roblox script repair bot."}, "/faculty": {"t": "t-faculty", "title": "Faculty | Robin Williams Repair Bot", "desc": "Meet Robin, Melanie and Penny, the AIs from Kurrasch Systems."}, "/docs": {"t": "t-docs", "title": "Docs | Robin Williams Repair Bot", "desc": "How to use Robin: commands, limits, file types and troubleshooting."}, "/invite": {"t": "t-invite", "title": "Invite Robin | Robin Williams Repair Bot", "desc": "Add the Robin script repair bot to your Discord server."}, "/appeal": {"t": "t-appeal", "title": "Appeals | Robin Williams Repair Bot", "desc": "Ask the owner to review a decision, a plan or a usage limit."}, "/partners": {"t": "t-partners", "title": "Partners | Robin Williams Repair Bot", "desc": "Apply for a Tier 5 partner plan with unlimited repairs and conversions."}, "/admin": {"t": "t-admin", "title": "Admin | Robin Williams Repair Bot", "desc": "Owner dashboard."}, "/ip-protection": {"t": "t-ip-protection", "title": "IP protection | Robin Williams Repair Bot", "desc": "How Robin respects script authors and what to do if you see a problem."}, "/terms": {"t": "t-terms", "title": "Terms of Service | Robin Williams Repair Bot", "desc": "Terms of service for the Robin Williams Repair Bot."}, "/privacy": {"t": "t-privacy", "title": "Privacy Policy | Robin Williams Repair Bot", "desc": "How the Robin Williams Repair Bot handles your data."}, "/refunds": {"t": "t-refunds", "title": "Refund Policy | Robin Williams Repair Bot", "desc": "Refund policy for Robin plans."}, "/404": {"t": "t-404", "title": "Page not found | Robin Williams Repair Bot", "desc": "Page not found."}};
 function route(forced){
   let p=forced||(location.protocol==='file:'?'/':location.pathname);
   p=p.replace(/\/+$/,'')||'/';
@@ -872,7 +987,7 @@ function route(forced){
   view.appendChild(document.getElementById(r.t).content.cloneNode(true));
   document.title=r.title;
   document.querySelector('meta[name=description]').content=r.desc;
-  document.getElementById('robots').content=(p==='/admin'||p==='/404'||p==='/learn')?'noindex':'index';
+  document.getElementById('robots').content=(p==='/admin'||p==='/404'||p==='/learn'||p==='/dashboard'||p==='/login')?'noindex':'index';
   document.querySelectorAll('.nav a').forEach(a=>{ if(a.getAttribute('href')===p||(p==='/class'&&a.getAttribute('href')==='/classes')) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
   window.onAuth=null; window.scrollTo(0,0);
   if(INITS[p]) INITS[p](param);
